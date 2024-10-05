@@ -8,14 +8,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "student")
-//@Getter
-//@Setter
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
     private int id;
-    @Column(name = "stident_name")
+    @Column(name = "student_name")
     @NotEmpty(message = "Student name cannot be empty")
     private String name;
 
@@ -27,6 +26,10 @@ public class Student {
     )
     private Set<Course> courses = new HashSet<>();
 
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
@@ -35,7 +38,15 @@ public class Student {
         return courses;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

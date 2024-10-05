@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Table(name = "course")
@@ -23,9 +24,9 @@ public class Course {
     @Column(name = "occupied_seats")
     private int occupiedSeats;
     @Column(name = "enrollment_start")
-    private LocalDateTime enrollmentStart;
+    private ZonedDateTime enrollmentStart;
     @Column(name = "enrollment_end")
-    private LocalDateTime enrollmentEnd;
+    private ZonedDateTime enrollmentEnd;
 
     public int getId() {
         return id;
@@ -43,12 +44,16 @@ public class Course {
         return occupiedSeats;
     }
 
-    public LocalDateTime getEnrollmentStart() {
+    public ZonedDateTime getEnrollmentStart() {
         return enrollmentStart;
     }
 
-    public LocalDateTime getEnrollmentEnd() {
+    public ZonedDateTime getEnrollmentEnd() {
         return enrollmentEnd;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
@@ -63,11 +68,11 @@ public class Course {
         this.occupiedSeats = occupiedSeats;
     }
 
-    public void setEnrollmentStart(LocalDateTime enrollmentStart) {
+    public void setEnrollmentStart(ZonedDateTime enrollmentStart) {
         this.enrollmentStart = enrollmentStart;
     }
 
-    public void setEnrollmentEnd(LocalDateTime enrollmentEnd) {
+    public void setEnrollmentEnd(ZonedDateTime enrollmentEnd) {
         this.enrollmentEnd = enrollmentEnd;
     }
 }
