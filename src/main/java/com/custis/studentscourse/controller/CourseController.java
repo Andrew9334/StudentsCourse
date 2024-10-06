@@ -23,8 +23,8 @@ public class CourseController {
         return courseService.getAllCourses();
     }
 
-    @PostMapping("/enroll")
-    public ResponseEntity<String> enrollStudent(@RequestParam int courseId, @RequestBody Student student) {
+    @PostMapping("/enroll/{courseId}")
+    public ResponseEntity<String> enrollStudent(@PathVariable int courseId, @RequestBody Student student) {
         try {
             courseService.enrollStudent(courseId, student);
             return ResponseEntity.ok("Student enrolled successfully");
@@ -36,6 +36,6 @@ public class CourseController {
     @PostMapping
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
         Course createdCourse = courseService.createCourse(course);
-        return ResponseEntity.ok(createdCourse);
+        return ResponseEntity.status(201).body(createdCourse);
     }
 }
