@@ -31,7 +31,7 @@ public class StudentControllerTest {
 
         when(studentRepository.save(any(Student.class))).thenReturn(student);
 
-        Student createdStudent = studentService.createStudent("Petr Petrov");
+        Student createdStudent = studentService.createStudent(student);
 
         assertNotNull(createdStudent);
         assertEquals("Petr Petrov", createdStudent.getName());

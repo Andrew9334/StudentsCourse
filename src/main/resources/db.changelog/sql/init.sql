@@ -14,11 +14,3 @@ CREATE TABLE IF NOT EXISTS student
     student_name VARCHAR(100) NOT NULL
 );
 
--- INSERT INTO course (course_name, total_seats, enrollment_start, enrollment_end)
--- VALUES ('Mathematics', 30, '2024-10-01T10:00:00Z', '2024-10-15T23:59:59Z'),
---        ('Physics', 25, '2024-10-01T10:00:00Z', '2024-10-15T23:59:59Z');
-
--- INSERT INTO student (student_name)
--- VALUES ('John Doe'),
---        ('Jane Smith');
-
