@@ -18,12 +18,10 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Student createStudent(String name) {
-        if (name == null || name.trim().isEmpty()) {
+    public Student createStudent(Student student) {
+        if (student == null || student.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Student name cannot be null or empty");
         }
-        Student student = new Student();
-        student.setName(name);
         return studentRepository.save(student);
     }
 
