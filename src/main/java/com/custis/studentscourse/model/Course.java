@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.time.ZonedDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "course")
@@ -26,6 +27,9 @@ public class Course {
     private ZonedDateTime enrollmentStart;
     @Column(name = "enrollment_end")
     private ZonedDateTime enrollmentEnd;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments;
 
     public int getId() {
         return id;

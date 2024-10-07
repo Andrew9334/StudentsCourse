@@ -3,6 +3,7 @@ package com.custis.studentscourse.model;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Entity
 @Table(name = "student")
@@ -15,6 +16,9 @@ public class Student {
     @Column(name = "student_name")
     @NotEmpty(message = "Student name cannot be empty")
     private String name;
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Enrollment> enrollments;
 
     public int getId() {
         return id;
