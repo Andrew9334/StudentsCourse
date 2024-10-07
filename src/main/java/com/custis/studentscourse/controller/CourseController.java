@@ -1,7 +1,6 @@
 package com.custis.studentscourse.controller;
 
 import com.custis.studentscourse.model.Course;
-import com.custis.studentscourse.model.Student;
 import com.custis.studentscourse.service.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,23 +18,29 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getCourses() {
+    public List<Course> getAllCourses() {
         return courseService.getAllCourses();
     }
 
-    @PostMapping("/enroll/{courseId}")
-    public ResponseEntity<String> enrollStudent(@PathVariable int courseId, @RequestBody Student student) {
-        try {
-            courseService.enrollStudent(courseId, student);
-            return ResponseEntity.ok("Student enrolled successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    @GetMapping("/{courseId}")
+    public Course getCourseById(@PathVariable int courseId) {
+        return courseService.getCourseById(courseId);
     }
 
     @PostMapping
     public ResponseEntity<Course> createCourse(@RequestBody Course course) {
         Course createdCourse = courseService.createCourse(course);
         return ResponseEntity.status(201).body(createdCourse);
+    }
+
+    @PutMapping("/{courseId}")
+    public Course updateCourse (@PathVariable int courseId, @RequestBody Course course) {
+        return courseService.updateCourse(courseId, course);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable int courseId) {
+        courseService.deleteCourse(courseId);
+        return ResponseEntity.noContent().build();
     }
 }

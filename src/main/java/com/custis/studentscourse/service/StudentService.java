@@ -18,20 +18,34 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Student createStudent(Student student) {
-        if (student == null || student.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("Student name cannot be null or empty");
-        }
-        return studentRepository.save(student);
-    }
-
-    public Set<Course> getStudentCourses(int studentId) {
-        Student student = studentRepository.findById(studentId)
-                .orElseThrow(() -> new StudentNotFoundException("Student not found"));
-        return student.getCourses();
-    }
-
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
+
+    public Student getStudentById(int studentId) {
+        return studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException("Student not found"));
+    }
+
+    public Student createStudent(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public Student updateStudent(int studentId, Student studentDetails) {
+        Student student = getStudentById(studentId);
+        student.setName(studentDetails.getName());
+        return studentRepository.save(student);
+    }
+
+    public void deleteStudent(int studentId) {
+        Student student = getStudentById(studentId);
+        studentRepository.delete(student);
+    }
+//    public Set<Course> getStudentCourses(int studentId) {
+//        Student student = studentRepository.findById(studentId)
+//                .orElseThrow(() -> new StudentNotFoundException("Student not found"));
+//        return student.getCourses();
+//    }
+
+
 }

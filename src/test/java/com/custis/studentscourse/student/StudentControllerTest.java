@@ -38,16 +38,16 @@ public class StudentControllerTest {
         verify(studentRepository, times(1)).save(any(Student.class));
     }
 
-    @Test
-    void testGetStudentCoursesStudentNotFound() {
-        when(studentRepository.findById(1)).thenReturn(Optional.empty());
-
-        Exception exception = assertThrows(StudentNotFoundException.class, () -> {
-            studentService.getStudentCourses(1);
-        });
-
-        assertEquals("Student not found", exception.getMessage());
-    }
+//    @Test
+//    void testGetStudentCoursesStudentNotFound() {
+//        when(studentRepository.findById(1)).thenReturn(Optional.empty());
+//
+//        Exception exception = assertThrows(StudentNotFoundException.class, () -> {
+//            studentService.getStudentCourses(1);
+//        });
+//
+//        assertEquals("Student not found", exception.getMessage());
+//    }
 
     @Test
     void testGetAllStudents() {

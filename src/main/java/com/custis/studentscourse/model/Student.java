@@ -18,13 +18,13 @@ public class Student {
     @NotEmpty(message = "Student name cannot be empty")
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "enrollments",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private Set<Course> courses = new HashSet<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name = "enrollments",
+//            joinColumns = @JoinColumn(name = "student_id"),
+//            inverseJoinColumns = @JoinColumn(name = "course_id")
+//    )
+//    private Set<Course> courses = new HashSet<>();
 
     public int getId() {
         return id;
@@ -34,9 +34,9 @@ public class Student {
         return name;
     }
 
-    public Set<Course> getCourses() {
-        return courses;
-    }
+//    public Set<Course> getCourses() {
+//        return courses;
+//    }
 
     public void setId(int id) {
         this.id = id;
@@ -46,7 +46,7 @@ public class Student {
         this.name = name;
     }
 
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
+//    public void setCourses(Set<Course> courses) {
+//        this.courses = courses;
+//    }
 }
