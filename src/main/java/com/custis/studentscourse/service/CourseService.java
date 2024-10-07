@@ -5,6 +5,7 @@ import com.custis.studentscourse.model.Course;
 import com.custis.studentscourse.repository.CourseRepository;
 import com.custis.studentscourse.repository.StudentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class CourseService {
                 .orElseThrow(() -> new CourseNotFoundException("Course not found"));
     }
 
+    @Transactional
     public Course updateCourse(int courseId, Course courseDetails) {
         Course course = getCourseById(courseId);
         course.setName(courseDetails.getName());
@@ -36,10 +38,12 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
+    @Transactional
     public Course createCourse(Course course) {
         return courseRepository.save(course);
     }
 
+    @Transactional
     public void deleteCourse(int courseId) {
         Course course = getCourseById(courseId);
         courseRepository.delete(course);

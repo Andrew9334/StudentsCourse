@@ -12,6 +12,7 @@ import com.custis.studentscourse.repository.CourseRepository;
 import com.custis.studentscourse.repository.EnrollmentRepository;
 import com.custis.studentscourse.repository.StudentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -38,6 +39,7 @@ public class EnrollmentService {
                 .orElseThrow(() -> new EnrollmentNotFoundException("Enrollment not found"));
     }
 
+    @Transactional
     public void enrollStudent(int studentId, int courseId) {
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException("Student not found"));

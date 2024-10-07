@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 @Entity
