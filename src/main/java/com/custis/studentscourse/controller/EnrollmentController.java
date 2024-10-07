@@ -18,7 +18,7 @@ public class EnrollmentController {
     }
 
     @GetMapping("/courses")
-    public List<Course> getCourse() {
+    public List<Course> getAllCourses() {
         return enrollmentService.getAllCourses();
     }
 
@@ -31,5 +31,11 @@ public class EnrollmentController {
     public ResponseEntity<String> enrollStudent(@RequestParam int studentId, @RequestParam int courseId) {
         enrollmentService.enrollStudent(studentId, courseId);
         return ResponseEntity.status(201).body("Enrollment successful");
+    }
+
+    @DeleteMapping("/{enrollmentId}")
+    public ResponseEntity<Void> deleteEnrollment(@PathVariable int enrollmentId) {
+        enrollmentService.deleteEnrollment(enrollmentId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -62,4 +62,8 @@ public class EnrollmentService {
         course.setOccupiedSeats(course.getOccupiedSeats() + 1);
         courseRepository.save(course);
     }
+
+    public void deleteEnrollment(int enrollmentId) {
+        enrollmentRepository.deleteById(enrollmentId);
+    }
 }
