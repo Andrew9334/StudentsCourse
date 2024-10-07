@@ -5,6 +5,7 @@ import com.custis.studentscourse.service.CourseService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,14 +29,15 @@ public class CourseController {
     }
 
     @PostMapping
-    public ResponseEntity<Course> createCourse(@RequestBody Course course) {
+    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
         Course createdCourse = courseService.createCourse(course);
         return ResponseEntity.status(201).body(createdCourse);
     }
 
     @PutMapping("/{courseId}")
-    public Course updateCourse (@PathVariable int courseId, @RequestBody Course course) {
-        return courseService.updateCourse(courseId, course);
+    public ResponseEntity<Course> updateCourse (@PathVariable int courseId, @Valid @RequestBody Course course) {
+        Course updatedCourse = courseService.updateCourse(courseId, course);
+        return ResponseEntity.ok(updatedCourse);
     }
 
     @DeleteMapping("/{courseId}")

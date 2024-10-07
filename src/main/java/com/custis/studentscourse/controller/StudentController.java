@@ -6,6 +6,7 @@ import com.custis.studentscourse.service.StudentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -26,18 +27,21 @@ public class StudentController {
     }
 
     @GetMapping("/{studentId}")
-    public Student getStudentById(@PathVariable int studentId) {
-        return studentService.getStudentById(studentId);
+    public ResponseEntity<Student> getStudentById(@PathVariable int studentId) {
+        Student student = studentService.getStudentById(studentId);
+        return ResponseEntity.ok(student);
     }
 
     @PostMapping
-    public Student createStudent(@RequestBody Student student) {
-        return studentService.createStudent(student);
+    public ResponseEntity<Student> createStudent(@Valid @RequestBody Student student) {
+        Student createdStudent = studentService.createStudent(student);
+        return ResponseEntity.status(201).body(createdStudent);
     }
 
-    @PostMapping("/{studentId}")
-    public Student updateStudent(@PathVariable int studentId, @RequestBody Student student) {
-        return studentService.updateStudent(studentId, student);
+    @PutMapping("/{studentId}")
+    public ResponseEntity<Student> updateStudent(@PathVariable int studentId,@Valid @RequestBody Student student) {
+        Student updatedStudent = studentService.updateStudent(studentId, student);
+        return ResponseEntity.ok(updatedStudent);
     }
 
     @DeleteMapping("/{studentId}")
