@@ -60,7 +60,6 @@ public class CourseServiceTest {
         assertEquals("Course 1", result.getName());
     }
 
-
     @Test
     public void testCreateCourse() {
         Course course = new Course();
@@ -74,7 +73,6 @@ public class CourseServiceTest {
         assertEquals(201, response.getStatusCodeValue());
         assertEquals("New Course", response.getBody().getName());
     }
-
 
     @Test
     public void testUpdateCourse() {
