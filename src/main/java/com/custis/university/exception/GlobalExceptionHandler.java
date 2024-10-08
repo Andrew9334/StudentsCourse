@@ -2,6 +2,7 @@ package com.custis.university.exception;
 
 import com.custis.university.exception.course.CourseNotFoundException;
 import com.custis.university.exception.course.OccupiedSeatsException;
+import com.custis.university.exception.enrollment.DuplicateEnrollmentException;
 import com.custis.university.exception.enrollment.EnrollmentNotOpenException;
 import com.custis.university.exception.enrollment.EnrollmentNotFoundException;
 import com.custis.university.exception.student.StudentNotFoundException;
@@ -55,5 +56,11 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<String> handleOptimisticLockException(OptimisticLockException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict occurred: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(DuplicateEnrollmentException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<String> handleDuplicateEnrollmentException(DuplicateEnrollmentException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Conflict occurred: " + ex.getMessage());
     }
 }

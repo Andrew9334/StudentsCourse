@@ -2,6 +2,7 @@ package com.custis.university.service;
 
 import com.custis.university.exception.course.CourseNotFoundException;
 import com.custis.university.exception.course.OccupiedSeatsException;
+import com.custis.university.exception.enrollment.DuplicateEnrollmentException;
 import com.custis.university.exception.enrollment.EnrollmentNotOpenException;
 import com.custis.university.exception.enrollment.EnrollmentNotFoundException;
 import com.custis.university.exception.student.StudentNotFoundException;
@@ -53,6 +54,10 @@ public class EnrollmentService {
 
         if (course.getOccupiedSeats() >= foundCourse.getTotalSeats()) {
             throw new OccupiedSeatsException("No available seats");
+        }
+
+        if (enrollmentRepository.existsByStudentIdAndCourseId(foundStudent.getId(), foundCourse.getId())) {
+            throw new DuplicateEnrollmentException("Student is already enrolled in this course");
         }
 
         Enrollment enrollment = new Enrollment();
