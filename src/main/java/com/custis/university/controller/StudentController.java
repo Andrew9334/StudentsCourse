@@ -2,6 +2,8 @@ package com.custis.university.controller;
 
 import com.custis.university.model.Student;
 import com.custis.university.service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.List;
 @RequestMapping("/api/students")
 public class StudentController {
 
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
     private final StudentService studentService;
 
     public StudentController(StudentService studentService) {
@@ -33,18 +36,21 @@ public class StudentController {
     @PostMapping
     public ResponseEntity<Student> createStudent(@Valid @RequestBody Student student) {
         Student createdStudent = studentService.createStudent(student);
+        logger.info("Student created: {}", createdStudent.getId());
         return ResponseEntity.status(201).body(createdStudent);
     }
 
     @PutMapping("/{studentId}")
     public ResponseEntity<Student> updateStudent(@PathVariable int studentId, @Valid @RequestBody Student student) {
         Student updatedStudent = studentService.updateStudent(studentId, student);
+        logger.info("Student updated: {}", studentId);
         return ResponseEntity.ok(updatedStudent);
     }
 
     @DeleteMapping("/{studentId}")
     public ResponseEntity<Void> deleteStudent(@PathVariable int studentId) {
         studentService.deleteStudent(studentId);
+        logger.info("Student deleted: {}", studentId);
         return ResponseEntity.noContent().build();
     }
 }

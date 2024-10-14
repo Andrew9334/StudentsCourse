@@ -5,7 +5,8 @@ import jakarta.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "course")
@@ -22,14 +23,14 @@ public class Course {
     @Positive(message = "Total seats must be positive")
     private int totalSeats;
     @Column(name = "occupied_seats")
+    @Positive(message = "Occupied seats must be positive")
     private int occupiedSeats;
     @Column(name = "enrollment_start")
     private ZonedDateTime enrollmentStart;
     @Column(name = "enrollment_end")
     private ZonedDateTime enrollmentEnd;
-
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Enrollment> enrollments;
+    private Set<Enrollment> enrollments;
 
     public int getId() {
         return id;
@@ -77,5 +78,18 @@ public class Course {
 
     public void setEnrollmentEnd(ZonedDateTime enrollmentEnd) {
         this.enrollmentEnd = enrollmentEnd;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return id == course.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
