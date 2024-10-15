@@ -1,6 +1,7 @@
 package com.custis.university.course;
 
 import com.custis.university.controller.CourseController;
+import com.custis.university.dto.CourseDTO;
 import com.custis.university.model.Course;
 import com.custis.university.service.CourseService;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,18 +30,18 @@ public class CourseServiceTest {
 
     @Test
     public void testGetAllCourses() {
-        Course course1 = new Course();
+        CourseDTO course1 = new CourseDTO();
         course1.setId(1);
         course1.setName("Course 1");
 
-        Course course2 = new Course();
+        CourseDTO course2 = new CourseDTO();
         course2.setId(2);
         course2.setName("Course 2");
 
-        List<Course> courses = Arrays.asList(course1, course2);
+        List<CourseDTO> courses = Arrays.asList(course1, course2);
         when(courseService.getAllCourses()).thenReturn(courses);
 
-        List<Course> result = courseController.getAllCourses();
+        List<CourseDTO> result = courseController.getAllCourses();
 
         assertEquals(2, result.size());
         assertEquals("Course 1", result.get(0).getName());
@@ -49,26 +50,26 @@ public class CourseServiceTest {
 
     @Test
     public void testGetCourseById() {
-        Course course = new Course();
+        CourseDTO course = new CourseDTO();
         course.setId(1);
         course.setName("Course 1");
 
         when(courseService.getCourseById(1)).thenReturn(course);
 
-        Course result = courseController.getCourseById(1);
+        CourseDTO result = courseController.getCourseById(1);
 
         assertEquals("Course 1", result.getName());
     }
 
     @Test
     public void testCreateCourse() {
-        Course course = new Course();
-        course.setId(1);
-        course.setName("New Course");
+        CourseDTO courseDTO = new CourseDTO();
+        courseDTO.setId(1);
+        courseDTO.setName("New Course");
 
-        when(courseService.createCourse(any(Course.class))).thenReturn(course);
+        when(courseService.createCourse(any(CourseDTO.class))).thenReturn(courseDTO);
 
-        ResponseEntity<Course> response = courseController.createCourse(course);
+        ResponseEntity<CourseDTO> response = courseController.createCourse(courseDTO);
 
         assertEquals(201, response.getStatusCodeValue());
         assertEquals("New Course", response.getBody().getName());
@@ -76,13 +77,13 @@ public class CourseServiceTest {
 
     @Test
     public void testUpdateCourse() {
-        Course updatedCourse = new Course();
+        CourseDTO updatedCourse = new CourseDTO();
         updatedCourse.setId(1);
         updatedCourse.setName("Updated Course");
 
-        when(courseService.updateCourse(eq(1), any(Course.class))).thenReturn(updatedCourse);
+        when(courseService.updateCourse(eq(1), any(CourseDTO.class))).thenReturn(updatedCourse);
 
-        ResponseEntity<Course> response = courseController.updateCourse(1, updatedCourse);
+        ResponseEntity<CourseDTO> response = courseController.updateCourse(1, updatedCourse);
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("Updated Course", response.getBody().getName());

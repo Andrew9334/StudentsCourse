@@ -1,6 +1,6 @@
 package com.custis.university.controller;
 
-import com.custis.university.model.Course;
+import com.custis.university.dto.CourseDTO;
 import com.custis.university.service.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,25 +22,25 @@ public class CourseController {
     }
 
     @GetMapping
-    public List<Course> getAllCourses() {
+    public List<CourseDTO> getAllCourses() {
         return courseService.getAllCourses();
     }
 
     @GetMapping("/{courseId}")
-    public Course getCourseById(@PathVariable int courseId) {
+    public CourseDTO getCourseById(@PathVariable int courseId) {
         return courseService.getCourseById(courseId);
     }
 
     @PostMapping
-    public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
-        Course createdCourse = courseService.createCourse(course);
+    public ResponseEntity<CourseDTO> createCourse(@Valid @RequestBody CourseDTO course) {
+        CourseDTO createdCourse = courseService.createCourse(course);
         logger.info("Course created: {}", createdCourse.getId());
         return ResponseEntity.status(201).body(createdCourse);
     }
 
     @PutMapping("/{courseId}")
-    public ResponseEntity<Course> updateCourse(@PathVariable int courseId, @Valid @RequestBody Course course) {
-        Course updatedCourse = courseService.updateCourse(courseId, course);
+    public ResponseEntity<CourseDTO> updateCourse(@PathVariable int courseId, @Valid @RequestBody CourseDTO courseDTO) {
+        CourseDTO updatedCourse = courseService.updateCourse(courseId, courseDTO);
         logger.info("Course updated: {}", courseId);
         return ResponseEntity.ok(updatedCourse);
     }
