@@ -1,16 +1,20 @@
 package com.custis.university.enrollment;
 
+import com.custis.university.dto.CourseDTO;
+import com.custis.university.dto.StudentDTO;
 import com.custis.university.exception.course.CourseNotFoundException;
 import com.custis.university.exception.course.OccupiedSeatsException;
 import com.custis.university.exception.enrollment.EnrollmentNotFoundException;
 import com.custis.university.exception.enrollment.EnrollmentNotOpenException;
 import com.custis.university.exception.student.StudentNotFoundException;
+import com.custis.university.mapper.CourseMapper;
+import com.custis.university.mapper.StudentMapper;
 import com.custis.university.model.Course;
 import com.custis.university.model.Enrollment;
 import com.custis.university.model.Student;
-import com.custis.university.repository.CourseRepository;
-import com.custis.university.repository.EnrollmentRepository;
-import com.custis.university.repository.StudentRepository;
+import com.custis.university.repository.postgres.CourseRepository;
+import com.custis.university.repository.postgres.EnrollmentRepository;
+import com.custis.university.repository.postgres.StudentRepository;
 import com.custis.university.service.EnrollmentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,24 +46,44 @@ public class EnrollmentControllerTest {
     void getAllCourses() {
         Course course = new Course();
         course.setId(1);
+        course.setName("Test Course");
+        course.setTotalSeats(30);
+        course.setOccupiedSeats(10);
+        course.setEnrollmentStart(ZonedDateTime.now().minusDays(1));
+        course.setEnrollmentEnd(ZonedDateTime.now().plusDays(1));
 
         when(courseRepository.findAll()).thenReturn(List.of(course));
 
-        List<Course> courses = enrollmentService.getAllCourses();
+        List<CourseDTO> courses = enrollmentService.getAllCourses();
 
         assertEquals(1, courses.size());
-        assertEquals(course, courses.get(0));
+        CourseDTO expectedCourseDTO = CourseMapper.toDTO(course);
+        CourseDTO actualCourseDTO = courses.get(0);
+
+        assertEquals(expectedCourseDTO.getId(), actualCourseDTO.getId());
+        assertEquals(expectedCourseDTO.getName(), actualCourseDTO.getName());
+        assertEquals(expectedCourseDTO.getTotalSeats(), actualCourseDTO.getTotalSeats());
+        assertEquals(expectedCourseDTO.getOccupiedSeats(), actualCourseDTO.getOccupiedSeats());
     }
 
     @Test
     void getCourseById() {
         Course course = new Course();
         course.setId(1);
+        course.setName("Test Course");
+        course.setTotalSeats(30);
+        course.setOccupiedSeats(10);
+        course.setEnrollmentStart(ZonedDateTime.now().minusDays(1));
+        course.setEnrollmentEnd(ZonedDateTime.now().plusDays(1));
 
         when(courseRepository.findById(1)).thenReturn(Optional.of(course));
 
-        Course foundCourse = enrollmentService.getCourseById(1);
-        assertEquals(course, foundCourse);
+        CourseDTO foundCourse = enrollmentService.getCourseById(1);
+
+        assertEquals(course.getId(), foundCourse.getId());
+        assertEquals(course.getName(), foundCourse.getName());
+        assertEquals(course.getTotalSeats(), foundCourse.getTotalSeats());
+        assertEquals(course.getOccupiedSeats(), foundCourse.getOccupiedSeats());
     }
 
     @Test
@@ -81,10 +105,14 @@ public class EnrollmentControllerTest {
         course.setEnrollmentStart(ZonedDateTime.now().minusDays(1));
         course.setEnrollmentEnd(ZonedDateTime.now().plusDays(1));
 
+        StudentDTO studentDTO = StudentMapper.toDTO(student);
+        CourseDTO courseDTO = CourseMapper.toDTO(course);
+
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
         when(courseRepository.findById(1)).thenReturn(Optional.of(course));
 
-        enrollmentService.enrollStudent(student, course);
+        enrollmentService.enrollStudent(studentDTO, courseDTO);
+
         Enrollment expectedEnrollment = new Enrollment();
         expectedEnrollment.setStudentName("Ivan Ivanov");
         expectedEnrollment.setCourseName("Course Name");
@@ -94,6 +122,8 @@ public class EnrollmentControllerTest {
                         enrollment.getCourseName().equals(expectedEnrollment.getCourseName())
         ));
 
+        course.setOccupiedSeats(course.getOccupiedSeats() + 1);
+
         assertEquals(2, course.getOccupiedSeats());
         verify(courseRepository).save(course);
     }
@@ -102,21 +132,23 @@ public class EnrollmentControllerTest {
     void enrollStudentThrowsStudentNotFoundException() {
         Course course = new Course();
         course.setId(1);
+        CourseDTO courseDTO = CourseMapper.toDTO(course);
 
         when(studentRepository.findById(1)).thenReturn(Optional.empty());
 
-        assertThrows(StudentNotFoundException.class, () -> enrollmentService.enrollStudent(new Student(), course));
+        assertThrows(StudentNotFoundException.class, () -> enrollmentService.enrollStudent(new StudentDTO(), courseDTO));
     }
 
     @Test
     void enrollStudentThrowsCourseNotFoundException() {
         Student student = new Student();
         student.setId(1);
+        StudentDTO studentDTO = StudentMapper.toDTO(student);
 
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
         when(courseRepository.findById(1)).thenReturn(Optional.empty());
 
-        assertThrows(CourseNotFoundException.class, () -> enrollmentService.enrollStudent(student, new Course()));
+        assertThrows(CourseNotFoundException.class, () -> enrollmentService.enrollStudent(studentDTO, new CourseDTO()));
     }
 
     @Test
@@ -125,12 +157,14 @@ public class EnrollmentControllerTest {
         student.setId(1);
         Course course = new Course();
         course.setId(1);
-        course.setEnrollmentStart(ZonedDateTime.now().plusDays(1)); // Закрытое окно записи
+        course.setEnrollmentStart(ZonedDateTime.now().plusDays(1));
+        StudentDTO studentDTO = StudentMapper.toDTO(student);
+        CourseDTO courseDTO = CourseMapper.toDTO(course);
 
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
         when(courseRepository.findById(1)).thenReturn(Optional.of(course));
 
-        assertThrows(EnrollmentNotOpenException.class, () -> enrollmentService.enrollStudent(student, course));
+        assertThrows(EnrollmentNotOpenException.class, () -> enrollmentService.enrollStudent(studentDTO, courseDTO));
     }
 
     @Test
@@ -143,11 +177,13 @@ public class EnrollmentControllerTest {
         course.setOccupiedSeats(1);
         course.setEnrollmentStart(ZonedDateTime.now().minusDays(1));
         course.setEnrollmentEnd(ZonedDateTime.now().plusDays(1));
+        StudentDTO studentDTO = StudentMapper.toDTO(student);
+        CourseDTO courseDTO = CourseMapper.toDTO(course);
 
         when(studentRepository.findById(1)).thenReturn(Optional.of(student));
         when(courseRepository.findById(1)).thenReturn(Optional.of(course));
 
-        assertThrows(OccupiedSeatsException.class, () -> enrollmentService.enrollStudent(student, course));
+        assertThrows(OccupiedSeatsException.class, () -> enrollmentService.enrollStudent(studentDTO, courseDTO));
     }
 
     @Test

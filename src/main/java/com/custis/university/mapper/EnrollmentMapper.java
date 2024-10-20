@@ -2,7 +2,6 @@ package com.custis.university.mapper;
 
 import com.custis.university.dto.EnrollmentDTO;
 import com.custis.university.model.Enrollment;
-import com.custis.university.model.Student;
 
 public class EnrollmentMapper {
     public static EnrollmentDTO toDTO(Enrollment enrollment) {

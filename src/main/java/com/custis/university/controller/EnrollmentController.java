@@ -1,5 +1,9 @@
 package com.custis.university.controller;
 
+import com.custis.university.dto.CourseDTO;
+import com.custis.university.dto.StudentDTO;
+import com.custis.university.mapper.CourseMapper;
+import com.custis.university.mapper.StudentMapper;
 import com.custis.university.model.Course;
 import com.custis.university.model.Student;
 import com.custis.university.service.EnrollmentService;
@@ -22,12 +26,12 @@ public class EnrollmentController {
     }
 
     @GetMapping("/courses")
-    public List<Course> getAllCourses() {
+    public List<CourseDTO> getAllCourses() {
         return enrollmentService.getAllCourses();
     }
 
     @GetMapping("/courses/{courseId}")
-    public Course getCourseById(@PathVariable int courseId) {
+    public CourseDTO getCourseById(@PathVariable int courseId) {
         return enrollmentService.getCourseById(courseId);
     }
 
@@ -37,7 +41,9 @@ public class EnrollmentController {
         Course course = new Course();
         student.setId(studentId);
         course.setId(courseId);
-        enrollmentService.enrollStudent(student, course);
+        StudentDTO studentDTO = StudentMapper.toDTO(student);
+        CourseDTO courseDTO = CourseMapper.toDTO(course);
+        enrollmentService.enrollStudent(studentDTO, courseDTO);
         logger.info("Enrollment created for student: {}, to course: {}", studentId, courseId);
         return ResponseEntity.status(201).body("Enrollment successful");
     }

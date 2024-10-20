@@ -2,8 +2,9 @@ package com.custis.university.dto;
 
 public class StudentDTO {
 
-    private int id;
+    private Integer id;
     private String name;
+    private String action;
 
     public StudentDTO() {
     }
@@ -13,7 +14,7 @@ public class StudentDTO {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -27,5 +28,9 @@ public class StudentDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 }

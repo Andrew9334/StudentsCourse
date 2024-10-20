@@ -1,7 +1,7 @@
 package com.custis.university.student;
 
 import com.custis.university.controller.StudentController;
-import com.custis.university.model.Student;
+import com.custis.university.dto.StudentDTO;
 import com.custis.university.service.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,18 +27,18 @@ public class StudentControllerTest {
 
     @Test
     public void testGetAllStudents() {
-        Student student1 = new Student();
+        StudentDTO student1 = new StudentDTO();
         student1.setId(1);
         student1.setName("Alice");
 
-        Student student2 = new Student();
+        StudentDTO student2 = new StudentDTO();
         student2.setId(2);
         student2.setName("Bob");
 
-        List<Student> students = Arrays.asList(student1, student2);
+        List<StudentDTO> students = Arrays.asList(student1, student2);
         when(studentService.getAllStudents()).thenReturn(students);
 
-        ResponseEntity<List<Student>> response = studentController.getAllStudents();
+        ResponseEntity<List<StudentDTO>> response = studentController.getAllStudents();
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(2, response.getBody().size());
@@ -48,13 +48,13 @@ public class StudentControllerTest {
 
     @Test
     public void testGetStudentById() {
-        Student student = new Student();
+        StudentDTO student = new StudentDTO();
         student.setId(1);
         student.setName("Alice");
 
         when(studentService.getStudentById(1)).thenReturn(student);
 
-        ResponseEntity<Student> response = studentController.getStudentById(1);
+        ResponseEntity<StudentDTO> response = studentController.getStudentById(1);
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("Alice", response.getBody().getName());
@@ -62,13 +62,13 @@ public class StudentControllerTest {
 
     @Test
     public void testCreateStudent() {
-        Student student = new Student();
+        StudentDTO student = new StudentDTO();
         student.setId(1);
         student.setName("Alice");
 
-        when(studentService.createStudent(any(Student.class))).thenReturn(student);
+        when(studentService.createStudent(any(StudentDTO.class))).thenReturn(student);
 
-        ResponseEntity<Student> response = studentController.createStudent(student);
+        ResponseEntity<StudentDTO> response = studentController.createStudent(student);
 
         assertEquals(201, response.getStatusCodeValue());
         assertEquals("Alice", response.getBody().getName());
@@ -76,13 +76,13 @@ public class StudentControllerTest {
 
     @Test
     public void testUpdateStudent() {
-        Student updatedStudent = new Student();
+        StudentDTO updatedStudent = new StudentDTO();
         updatedStudent.setId(1);
         updatedStudent.setName("Updated Alice");
 
-        when(studentService.updateStudent(eq(1), any(Student.class))).thenReturn(updatedStudent);
+        when(studentService.updateStudent(eq(1), any(StudentDTO.class))).thenReturn(updatedStudent);
 
-        ResponseEntity<Student> response = studentController.updateStudent(1, updatedStudent);
+        ResponseEntity<StudentDTO> response = studentController.updateStudent(1, updatedStudent);
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals("Updated Alice", response.getBody().getName());

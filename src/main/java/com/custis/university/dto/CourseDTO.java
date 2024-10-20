@@ -4,10 +4,11 @@ import java.time.ZonedDateTime;
 
 public class CourseDTO {
 
-    private int id;
+    private Integer id;
     private String name;
     private int totalSeats;
     private int occupiedSeats;
+    private String action;
     private ZonedDateTime enrollmentStart;
     private ZonedDateTime EnrollmentEnd;
 
@@ -23,7 +24,7 @@ public class CourseDTO {
         this.EnrollmentEnd = EnrollmentEnd;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -53,6 +54,10 @@ public class CourseDTO {
 
     public void setOccupiedSeats(int occupiedSeats) {
         this.occupiedSeats = occupiedSeats;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public ZonedDateTime getEnrollmentStart() {
